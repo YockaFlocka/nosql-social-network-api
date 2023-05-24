@@ -34,7 +34,7 @@ router.post('/user', async (req, res) => {
     }
 })
 
-// update user
+// update user by id
 router.put('/user/:id', async (req, res) => {
     try {
       const updateUser = await User.findOneAndUpdate(
@@ -48,7 +48,7 @@ router.put('/user/:id', async (req, res) => {
     }
 })
 
-// delete user
+// delete user by id
 router.delete('/user/:id', async (req, res) => {
     try {
       const deleteUser = await User.findOneAndDelete({ _id: req.params.id });
@@ -61,7 +61,28 @@ router.delete('/user/:id', async (req, res) => {
 
 // ============  Thought Routes  ============= //
 
-// create thought
+
+// Get all thoughts
+router.get('/thought', async (req, res) => {
+    try {
+      const allThoughts = await Thought.find();
+      res.status(200).json({ status: "success", payload: allThoughts });
+    } catch (err) {
+      res.status(400).json({ msg: err.message });
+    }    
+  });
+
+// Get a single thought by id
+router.get('/thought/:id', async (req, res) => {
+    try {
+        const thought = await Thought.findOne({ _id: req.params.id });
+        res.status(200).json({ status: "success", payload: thought });
+      } catch (err) {
+        res.status(400).json({ msg: err.message });
+      }
+})
+
+// Create thought
 router.post('/thought', async (req, res) => {
     try {
         const newThought = await Thought.create(req.body);
@@ -71,7 +92,30 @@ router.post('/thought', async (req, res) => {
     }
 })
 
-// ============  Reaction Routes  ============= //
+// update thought by id
+router.put('/thought/:id', async (req, res) => {
+    try {
+      const updateThought = await Thought.findOneAndUpdate(
+        { _id: req.params.id },
+        { $set: req.body },
+        { runValidators: true, new: true }
+      );
+      res.status(200).json({ status: "success", payload: updateThought });  
+    } catch (error) {
+      res.status(400).json({ msg: error.message });  
+    }
+})
+
+// delete thought by id
+router.delete('/thought/:id', async (req, res) => {
+    try {
+      const deleteThought = await Thought.findOneAndDelete({ _id: req.params.id });
+      res.status(200).json({ status: "success", message: "Thought has been deleted!" });  
+    } catch (error) {
+      res.status(400).json({ msg: error.message });  
+    }
+})
+
 
 
 module.exports = router;

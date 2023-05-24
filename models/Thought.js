@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const dateFormatter = require('../utils/dateFormatter');
 
 const thoughtSchema = new mongoose.Schema({
     thoughtText: {
@@ -10,7 +9,6 @@ const thoughtSchema = new mongoose.Schema({
     createdAt: {
       type: Date,
       default: Date.now,
-      get: timestamp => dateFormatter(timestamp)
     },
     username: {
       type: String,
