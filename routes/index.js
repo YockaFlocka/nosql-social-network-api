@@ -59,6 +59,38 @@ router.delete('/user/:id', async (req, res) => {
 })
 
 
+// ============  User Friend Routes ============ //
+
+
+// add a new friend to user's friends list
+router.post('/user/:userId/friends/:friendId', async (req, res) => {
+  try {
+    const addFriend = await User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $addToSet: { friends: req.params.friendId } },
+      { runValidators: true, new: true }
+    );
+    res.status(200).json({ status: "success", payload: addFriend });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+})
+
+// remove a friend from a user's friend list
+router.delete('/user/:userId/friends/:friendId', async (req, res) => {
+  try {
+    const deleteFriend = await User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $pull: { friends: req.params.friendId } },
+      { runValidators: true, new: true }
+    );
+    res.status(200).json({ status: "success", payload: deleteFriend });
+  } catch (error) {
+    res.status(404).json({ msg: error.message });
+  }
+})
+
+
 // ============  Thought Routes  ============= //
 
 
@@ -82,7 +114,7 @@ router.get('/thought/:id', async (req, res) => {
       }
 })
 
-// Create thought
+// Create a thought
 router.post('/thought', async (req, res) => {
     try {
         const newThought = await Thought.create(req.body);
@@ -117,5 +149,34 @@ router.delete('/thought/:id', async (req, res) => {
 })
 
 
+// ============== Thought Reaction Routes ============ //
+
+// add a reaction to a thought
+router.post('/thoughts/:thoughtId/reactions', async (req, res) => {
+  try {
+    const addReaction = await Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $addToSet: { reactions: req.body } },
+      { runValidators: true, new: true }
+    );
+    res.status(200).json({ status: "success", payload: addReaction });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+})
+
+// remove a reaction by reactionId
+router.delete('/thoughts/:thoughtId/reactions', async (req, res) => {
+  try {
+    const deleteReaction = await Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: req.params.reactionId } },
+      { runValidators: true, new: true }
+    );
+    res.status(200).json({ status: "success", payload: deleteReaction });
+  } catch (error) {
+    res.status(404).json({ msg: error.message });
+  }
+})
 
 module.exports = router;
