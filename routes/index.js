@@ -166,8 +166,22 @@ router.post('/thoughts/:thoughtId/reactions', async (req, res) => {
 })
 
 // remove a reaction by reactionId
-router.delete('/thoughts/:thoughtId/reactions/:reactionId', async (req, res) => {
-  console.log(req.params.reactionId)
+router.delete('/thoughts/:thoughtId/reactions/:reactionId', async (req, res) => { 
+
+  // const thought = await Thought.findOne({ _id: req.params.reactionId})
+
+  // const newThought = {
+  //   ...thought,
+  //   reactions: thought.reactions.filter( reaction => reaction !== req.params.reactionId)
+  // }
+
+  // const update = await Thought.findOneAndUpdate(
+  //   { _id: thought._id },
+  //   newThought,
+  //   { runValidators: true, new: true }
+  // )
+
+
   try {
     const deleteReaction = await Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
