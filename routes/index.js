@@ -166,14 +166,15 @@ router.post('/thoughts/:thoughtId/reactions', async (req, res) => {
 })
 
 // remove a reaction by reactionId
-router.delete('/thoughts/:thoughtId/reactions', async (req, res) => {
+router.delete('/thoughts/:thoughtId/reactions/:reactionId', async (req, res) => {
+  console.log(req.params.reactionId)
   try {
     const deleteReaction = await Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
       { $pull: { reactions: req.params.reactionId } },
       { runValidators: true, new: true }
     );
-    res.status(200).json({ status: "success", payload: deleteReaction });
+    res.status(200).json({ status: "success", msg: "reaction removed" });
   } catch (error) {
     res.status(404).json({ msg: error.message });
   }

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const reactionSchema = require("./Reaction")
 
 const thoughtSchema = new mongoose.Schema({
     thoughtText: {
@@ -8,10 +9,7 @@ const thoughtSchema = new mongoose.Schema({
     },
     createdAt: {
       type: Date,
-      default: Date.now,
-      get: (date) => {
-        if (date) return date.format('MMM DD, YYYY')
-      }
+      default: Date.now
     },
     username: {
       type: String,
